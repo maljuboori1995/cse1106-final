@@ -16,16 +16,6 @@ A classroom monitoring program that records temperature readings in Fahrenheit, 
 - Re-evaluate the latest temperature when a new range is configured.
 - Reject invalid numeric input and ranges where minimum is not less than maximum.
 
-**Important:** The default build is **simulation mode** and does **not** control a real LED. The Raspberry Pi build uses `pigpio` to control physical GPIO17. Software tests have passed in simulation; the real Pi wiring and LED still require an in-person check.
-
-## Run on a laptop or desktop (no Raspberry Pi needed)
-
-From the project directory, using a terminal with `gcc` and `make` installed:
-
-```bash
-make sim
-./build/comfort_monitor
-```
 
 The program automatically creates runtime files under `data/`.
 
@@ -42,7 +32,7 @@ A demonstration of the menu:
 
 ## Run on the Raspberry Pi 4
 
-1. Turn off the Pi before wiring. Use **BCM GPIO17 / physical pin 11 → 1 kΩ resistor → LED positive (long leg)**, and **LED negative (short leg) → any GND, e.g. physical pin 6**. Do **not** connect the LED directly across GPIO and ground without a resistor, or to a 5 V supply. See [`docs/hardware_setup.md`](docs/hardware_setup.md).
+1. Turn off the Pi before wiring. Use **BCM GPIO17 / physical pin 11 → 1 kΩ resistor → LED positive (long leg)**, and **LED negative (short leg) → any GND, e.g. physical pin 6**. Do **not** connect the LED directly across GPIO and ground without a resistor, or to a 5 V supply. 
 2. On the lab Raspberry Pi, confirm the `pigpio` C library and headers (`pigpio.h`) are available. Ask the lab instructor if the image does not include them.
 3. Compile from the project root:
 
@@ -67,9 +57,6 @@ The LED is switched off when the program exits. The saved status file retains th
 ```bash
 make test
 ```
-
-The 12 software tests use temporary data folders and do not change your real project data. They check the comfort-range boundaries, invalid inputs, logging, average, range changes, and persistence across restarts. The physical LED requires a separate live test.
-
 ## Files in this project
 
 ```text
@@ -77,59 +64,14 @@ cse1106_comfort_monitor/
 ├── src/
 │   └── main.c                 C program
 ├── docs/
-│   ├── week1_plan.md          One-page team planning worksheet
 │   ├── requirements.md        Functional requirements and acceptance criteria
 │   ├── design.md              Architecture and software/hardware flowchart
-│   ├── hardware_setup.md      Raspberry Pi GPIO wiring and operation
-│   ├── change_log.md          Changes and outstanding verification
-│   ├── demo_guide.md          3–5 minute demo sequence
-│   └── reflection_template.md Individual reflection prompts
 ├── tests/
 │   ├── test_plan.md           Software and hardware test cases
-│   ├── test_results.md        Actual software simulation results
-│   └── run_tests.py           Automated software test runner
 ├── data/
-│   └── .gitkeep               Keeps empty folder in GitHub
-├── Makefile
-├── .gitignore
+│   └── tempreture_log.csv             
+├── status.txt                 NORMAL or WARNING
 └── README.md
 ```
 
-When the program runs, it creates these *local* files:
 
-- `data/temperature_log.csv` — timestamp, temperature, classification, limits used.
-- `data/status.txt` — most recent status: `NO_DATA`, `NORMAL`, or `WARNING`.
-- `data/config.txt` — saved minimum and maximum temperature limits.
-
-Runtime files are excluded by `.gitignore`, so personal test data is not accidentally committed. For an instructor demonstration, show the generated files or copy an appropriate sanitized example into your submission if required.
-
-## Publish the repository to GitHub
-
-Create a new **empty** repository in GitHub (do not let GitHub generate a separate README). Then from this project's directory run:
-
-```bash
-git init
-git add .
-git commit -m "Initial CSE 1106 comfort monitor"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/cse1106-comfort-monitor.git
-git push -u origin main
-```
-
-Replace `YOUR_USERNAME` with the account or organization that owns the team repository. Team members can clone it with `git clone <repository-URL>` and commit their assigned work.
-
-## Instructor deliverables checklist
-
-- [ ] GitHub repository with code, README, and documents
-- [ ] Names/NetIDs and instructor section completed in the planning document
-- [x] Requirements and system-design documents prepared
-- [x] Working C program and simulation build prepared
-- [x] At least five documented software test cases; 12 software tests passed locally
-- [ ] Raspberry Pi `pigpio` build and physical LED verified in the lab
-- [ ] Change log updated with actual team debugging and lab changes
-- [ ] 3–5 minute live team demonstration performed; every member participates
-- [ ] Each team member submits their own truthful individual reflection
-
-### Note on tested status
-
-The software test report includes **actual results observed from the non-hardware simulation**. It does not claim that the physical LED or Raspberry Pi build has been tested. Do not mark hardware integration as complete until you have demonstrated it on your Pi.
