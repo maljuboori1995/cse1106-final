@@ -17,7 +17,6 @@ A classroom monitoring program that records temperature readings in Fahrenheit, 
 - Reject invalid numeric input and ranges where minimum is not less than maximum.
 
 
-The program automatically creates runtime files under `data/`.
 
 A demonstration of the menu:
 
@@ -50,8 +49,6 @@ A demonstration of the menu:
 
 The LED is switched off when the program exits. The saved status file retains the classification of the most recently recorded reading.
 
-> Note: These instructions target the **Raspberry Pi 4 used in the provided CSE 1106 handout**. `pigpio` installation and compatibility depend on the operating-system image; do not assume this GPIO build works on a different Pi model without checking.
-
 ## Run the automated tests
 
 ```bash
@@ -59,7 +56,6 @@ make test
 ```
 ## Files in this project
 
-```text
 cse1106_comfort_monitor/
 ├── src/
 │   └── main.c                 C program
