@@ -32,7 +32,7 @@ A demonstration of the menu:
 ## Run on the Raspberry Pi 4
 
 1. Turn off the Pi before wiring. Use **BCM GPIO17 / physical pin 11 → 1 kΩ resistor → LED positive (long leg)**, and **LED negative (short leg) → any GND, e.g. physical pin 6**. Do **not** connect the LED directly across GPIO and ground without a resistor, or to a 5 V supply. 
-2. On the lab Raspberry Pi, confirm the `pigpio` C library and headers (`pigpio.h`) are available. Ask the lab instructor if the image does not include them.
+2. On the lab Raspberry Pi, confirm the `pigpio` C library and headers (`pigpio.h`) are available. 
 3. Compile from the project root:
 
    ```bash
