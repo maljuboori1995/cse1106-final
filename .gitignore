@@ -1,0 +1,8 @@
+# Compiled executable
+comfort_monitor
+
+# Object files
+*.o
+
+# Local VS Code settings
+.vscode/
