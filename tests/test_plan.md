@@ -14,35 +14,35 @@
 
 The goal is to verify that the program correctly reads temperatures, identifies NORMAL and WARNING conditions, calculates averages, and saves results to files.
 
-The software is tested before connecting the LED to the Raspberry Pi.
+The software was tested before connecting the LED to the Raspberry Pi.
 
 ### 3. Software Test Cases
 
-The LED ON/OFF results in these tests refer to simulated console output, not physical GPIO operation.
+The LED ON/OFF results refer to simulated console output, not physical GPIO operation.
 
-| Test | Input                   | Expected Result                   | Status |
-| ---- | ----------------------- | --------------------------------- | ------ |
-| 1    | 72 F                    | NORMAL, LED OFF                   | Passed |
-| 2    | 80 F                    | WARNING, LED ON                   | Passed |
-| 3    | 65 F                    | WARNING, LED ON                   | Passed |
-| 4    | 68 F                    | NORMAL, LED OFF                   | Passed |
-| 5    | 76 F                    | NORMAL, LED OFF                   | Passed |
-| 6    | Change range to 65-80 F | New range accepted                | Passed |
-| 7    | 65 F with custom range  | NORMAL, LED OFF                   | Passed |
-| 8    | 80 F with custom range  | NORMAL, LED OFF                   | Passed |
-| 9    | 81 F with custom range  | WARNING, LED ON                   | Passed |
-| 10   | Readings: 65, 80, 81    | Average: 75.33 F                  | Passed |
-| 11   | Multiple readings       | CSV records saved                 | Passed |
-| 12   | Latest reading: 81 F    | status.txt = WARNING              | Passed |
-| 13   | Default range, 70 F     | NORMAL, LED OFF                   | Passed |
-| 14   | Latest reading: 70 F    | status.txt = NORMAL               | Passed |
-| 15   | Temperature: abc        | Invalid temperature error         | Passed |
-| 16   | Reading count: 0        | Invalid number of readings        | Passed |
-| 17   | Reading count: -3       | Invalid number of readings        | Passed |
-| 18   | Range: 85-70 F          | Minimum must be less than maximum | Passed |
-| 19   | Menu choice: x          | Invalid Y/N selection             | Passed |
-| 20   | Temperature: nan        | Invalid temperature error         | Passed |
-| 21   | Temperature: inf        | Invalid temperature error         | Passed |
+| Test | Input                   | Expected Result            | Actual Output                             | Status |
+| ---- | ----------------------- | -------------------------- | ----------------------------------------- | ------ |
+| 1    | 72 F                    | NORMAL, LED OFF            | NORMAL, LED OFF                           | Passed |
+| 2    | 80 F                    | WARNING, LED ON            | WARNING, LED ON                           | Passed |
+| 3    | 65 F                    | WARNING, LED ON            | WARNING, LED ON                           | Passed |
+| 4    | 68 F                    | NORMAL, LED OFF            | NORMAL, LED OFF                           | Passed |
+| 5    | 76 F                    | NORMAL, LED OFF            | NORMAL, LED OFF                           | Passed |
+| 6    | Change range to 65-80 F | Range accepted             | New range: 65.00 F - 80.00 F              | Passed |
+| 7    | 65 F, custom range      | NORMAL, LED OFF            | NORMAL, LED OFF                           | Passed |
+| 8    | 80 F, custom range      | NORMAL, LED OFF            | NORMAL, LED OFF                           | Passed |
+| 9    | 81 F, custom range      | WARNING, LED ON            | WARNING, LED ON                           | Passed |
+| 10   | Readings: 65, 80, 81    | Average: 75.33 F           | Average: 75.33 F                          | Passed |
+| 11   | Multiple readings       | CSV records saved          | All readings saved                        | Passed |
+| 12   | Latest warning: 65 F    | status.txt = WARNING       | WARNING                                   | Passed |
+| 13   | Default range, 70 F     | NORMAL, LED OFF            | NORMAL, LED OFF                           | Passed |
+| 14   | Latest reading: 70 F    | status.txt = NORMAL        | NORMAL                                    | Passed |
+| 15   | Temperature: abc        | Invalid temperature error  | Error: Invalid temperature.               | Passed |
+| 16   | Reading count: 0        | Invalid number of readings | Error: Invalid number of readings.        | Passed |
+| 17   | Reading count: -3       | Invalid number of readings | Error: Invalid number of readings.        | Passed |
+| 18   | Range: 85-70 F          | Invalid range error        | Error: Minimum must be less than maximum. | Passed |
+| 19   | Menu choice: x          | Invalid Y/N selection      | Error: Please enter Y or N.               | Passed |
+| 20   | Temperature: nan        | Invalid temperature error  | Error: Invalid temperature.               | Passed |
+| 21   | Temperature: inf        | Invalid temperature error  | Error: Invalid temperature.               | Passed |
 
 ### 4. File Testing
 
@@ -54,11 +54,19 @@ Each record contains:
 - Temperature in Fahrenheit
 - NORMAL or WARNING status
 
+Example of actual saved records:
+
+    2026-11-11 21:42:40,65.00,NORMAL
+    2026-11-11 21:42:42,80.00,NORMAL
+    2026-11-11 21:42:45,81.00,WARNING
+
+These readings used the custom range of 65-80 F.
+
 The CSV file keeps previous records when new readings are added.
 
-The status.txt file stores only the latest temperature status.
+The status.txt file stores the latest NORMAL or WARNING status. I verified that it updated correctly after new readings.
 
-Both files were tested successfully.
+Both files worked as expected.
 
 ### 5. Additional Tests Needed
 
@@ -70,6 +78,7 @@ The following hardware tests still need to be completed:
 - Verify the LED turns ON during WARNING conditions.
 - Verify the LED turns OFF during NORMAL conditions.
 - Confirm GPIO control works with the C program.
+- Rerun software tests on the Raspberry Pi.
 
 ### 6. Hardware Testing
 
@@ -104,6 +113,8 @@ Physical LED testing is still pending.
 
 ### 8. Conclusion
 
-The software features tested so far are working correctly. The next step is to connect the LED to the Raspberry Pi and verify the hardware behavior.
+The software features tested so far are working correctly. The program processes temperatures, calculates averages, and saves results to files.
+
+The remaining steps are to run the program on the Raspberry Pi, connect the LED, and verify that it works with the GPIO interface.
 
 Final testing will be completed after hardware integration.
