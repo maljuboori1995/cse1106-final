@@ -1,71 +1,114 @@
-# CSE 1106 Final Project — Smart Classroom Comfort Monitor
+# Smart Classroom Comfort Monitor
 
-**Chosen project:** Option 1 — Smart Classroom Comfort Monitor  
-**Language:** C  
-**Hardware:** Raspberry Pi 4 with a red LED and a 1 kΩ resistor  
-**LED GPIO:** BCM GPIO17 (physical pin 11)
+## CSE 1106 Final Project
 
-A classroom monitoring program that records temperature readings in Fahrenheit, checks whether each is in the **68°F–76°F inclusive** comfort range, saves results, calculates the average, and turns on an LED whenever the latest temperature is outside the range. The minimum and maximum temperatures can be changed and are retained for future runs.
+### Project Overview
 
-## What the program does
+This project is a classroom temperature monitoring system written in C. The program checks whether the temperature is within an acceptable range and displays NORMAL or WARNING.
 
-- Enter a temperature; see **NORMAL** or **WARNING** and LED **OFF** or **ON**.
-- Save each reading, its classification, and the range used to a CSV log.
-- Show the overall average and number of recorded readings, including previous runs.
-- Change the acceptable temperature range without editing the C source code.
-- Re-evaluate the latest temperature when a new range is configured.
-- Reject invalid numeric input and ranges where minimum is not less than maximum.
+It also calculates the average temperature, saves readings to a CSV file, and keeps track of the latest status.
 
+### Features
 
+- Enter multiple temperature readings in Fahrenheit.
+- Check temperatures against the default range of 68-76 F.
+- Change the acceptable temperature range.
+- Display NORMAL or WARNING.
+- Display simulated LED ON/OFF messages.
+- Calculate the average temperature.
+- Save readings with timestamps to a CSV file.
+- Update status.txt with the latest status.
+- Reject invalid inputs.
 
-A demonstration of the menu:
+### Project Files
 
-```text
-1. Enter a temperature reading       -> enter 72 -> NORMAL, LED OFF
-1. Enter a temperature reading       -> enter 79 -> WARNING, LED ON
-3. View summary                      -> average: 75.50 F
-2. Change acceptable temperature range -> enter 60 then 80
-                                        -> last reading is now NORMAL
-4. Exit
-```
+- src/main.c - Main C program.
+- docs/requirements.md - Project requirements.
+- docs/design.md - System design.
+- docs/change_log.md - Development history.
+- tests/test_plan.md - Test cases and results.
+- data/temperature_log.csv - Saved temperature readings.
+- status.txt - Latest temperature status.
 
-## Run on the Raspberry Pi 4
+### How to Compile
 
-1. Turn off the Pi before wiring. Use **BCM GPIO17 / physical pin 11 → 1 kΩ resistor → LED positive (long leg)**, and **LED negative (short leg) → any GND, e.g. physical pin 6**. Do **not** connect the LED directly across GPIO and ground without a resistor, or to a 5 V supply. 
-2. On the lab Raspberry Pi, confirm the `pigpio` C library and headers (`pigpio.h`) are available. 
-3. Compile from the project root:
+Open a terminal in the project folder and run:
 
-   ```bash
-   make pi
-   ```
+    gcc -std=c11 -Wall -Wextra -pedantic src/main.c -o comfort_monitor
 
-4. Run the GPIO-enabled program from the project root:
+### How to Run
 
-   ```bash
-   sudo ./build/comfort_monitor_pi
-   ```
+Run the program using:
 
-5. Enter a reading outside the comfort range and confirm that the **physical red LED turns on**. Enter a reading in range and confirm it turns off.
+    ./comfort_monitor
 
-The LED is switched off when the program exits. The saved status file retains the classification of the most recently recorded reading.
+The program asks whether you want to change the temperature range.
 
-## Run the automated tests
+Enter the number of readings, then enter each temperature.
 
-```bash
-make test
-```
-## Files in this project
-```text
-cse1106-final/
-├── src/
-│   └── main.c                 C program
-├── docs/
-│   ├── requirements.md        Functional requirements and acceptance criteria
-│   ├── design.md              Architecture and software/hardware flowchart
-├── tests/
-│   ├── test_plan.md           Software and hardware test cases
-├── data/
-│   └── tempreture_log.csv             
-├── status.txt                 NORMAL or WARNING
-└── README.md
-```
+### Example Output
+
+    === Classroom Comfort Monitor ===
+
+    Current range: 68.00 F - 76.00 F
+    Change the range? (y/n): n
+
+    How many temperature readings? 3
+
+    Enter temperature 1 (F): 72
+    Status: NORMAL
+    LED: OFF
+    Reading saved successfully.
+
+    Enter temperature 2 (F): 80
+    Status: WARNING
+    LED: ON
+    Reading saved successfully.
+
+    Enter temperature 3 (F): 65
+    Status: WARNING
+    LED: ON
+    Reading saved successfully.
+
+    === Temperature Summary ===
+    Total readings: 3
+    Average temperature: 72.33 F
+
+### Testing
+
+The program was tested using Ubuntu WSL and GCC 13.3.0.
+
+I completed 21 software test cases covering:
+
+- Normal and warning temperatures.
+- Custom temperature ranges.
+- Average calculations.
+- CSV logging and status updates.
+- Invalid inputs.
+
+All 21 documented software tests passed.
+
+The results are recorded in tests/test_plan.md.
+
+### Raspberry Pi Hardware
+
+The project will use:
+
+- Raspberry Pi 4
+- Red LED
+- 1 kOhm resistor
+- Breadboard
+- Jumper wires
+
+Expected LED behavior:
+
+- NORMAL: LED OFF
+- WARNING: LED ON
+
+The program currently displays simulated LED messages. Physical GPIO control and LED testing will be completed in class.
+
+### Current Status
+
+The main C program is working and the software tests have passed.
+
+The remaining work includes Raspberry Pi integration, physical LED testing, and the final demonstration.
