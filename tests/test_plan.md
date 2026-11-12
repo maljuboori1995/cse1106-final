@@ -18,22 +18,31 @@ The software is tested before connecting the LED to the Raspberry Pi.
 
 ### 3. Software Test Cases
 
-| Test | Input                   | Expected Result      | Status |
-| ---- | ----------------------- | -------------------- | ------ |
-| 1    | 72 F                    | NORMAL, LED OFF      | Passed |
-| 2    | 80 F                    | WARNING, LED ON      | Passed |
-| 3    | 65 F                    | WARNING, LED ON      | Passed |
-| 4    | 68 F                    | NORMAL, LED OFF      | Passed |
-| 5    | 76 F                    | NORMAL, LED OFF      | Passed |
-| 6    | Change range to 65-80 F | New range accepted   | Passed |
-| 7    | 65 F with custom range  | NORMAL, LED OFF      | Passed |
-| 8    | 80 F with custom range  | NORMAL, LED OFF      | Passed |
-| 9    | 81 F with custom range  | WARNING, LED ON      | Passed |
-| 10   | Readings: 65, 80, 81    | Average: 75.33 F     | Passed |
-| 11   | Multiple readings       | CSV records saved    | Passed |
-| 12   | Latest reading: 81 F    | status.txt = WARNING | Passed |
-| 13   | Default range, 70 F     | NORMAL, LED OFF      | Passed |
-| 14   | Latest reading: 70 F    | status.txt = NORMAL  | Passed |
+The LED ON/OFF results in these tests refer to simulated console output, not physical GPIO operation.
+
+| Test | Input                   | Expected Result                   | Status |
+| ---- | ----------------------- | --------------------------------- | ------ |
+| 1    | 72 F                    | NORMAL, LED OFF                   | Passed |
+| 2    | 80 F                    | WARNING, LED ON                   | Passed |
+| 3    | 65 F                    | WARNING, LED ON                   | Passed |
+| 4    | 68 F                    | NORMAL, LED OFF                   | Passed |
+| 5    | 76 F                    | NORMAL, LED OFF                   | Passed |
+| 6    | Change range to 65-80 F | New range accepted                | Passed |
+| 7    | 65 F with custom range  | NORMAL, LED OFF                   | Passed |
+| 8    | 80 F with custom range  | NORMAL, LED OFF                   | Passed |
+| 9    | 81 F with custom range  | WARNING, LED ON                   | Passed |
+| 10   | Readings: 65, 80, 81    | Average: 75.33 F                  | Passed |
+| 11   | Multiple readings       | CSV records saved                 | Passed |
+| 12   | Latest reading: 81 F    | status.txt = WARNING              | Passed |
+| 13   | Default range, 70 F     | NORMAL, LED OFF                   | Passed |
+| 14   | Latest reading: 70 F    | status.txt = NORMAL               | Passed |
+| 15   | Temperature: abc        | Invalid temperature error         | Passed |
+| 16   | Reading count: 0        | Invalid number of readings        | Passed |
+| 17   | Reading count: -3       | Invalid number of readings        | Passed |
+| 18   | Range: 85-70 F          | Minimum must be less than maximum | Passed |
+| 19   | Menu choice: x          | Invalid Y/N selection             | Passed |
+| 20   | Temperature: nan        | Invalid temperature error         | Passed |
+| 21   | Temperature: inf        | Invalid temperature error         | Passed |
 
 ### 4. File Testing
 
@@ -53,13 +62,14 @@ Both files were tested successfully.
 
 ### 5. Additional Tests Needed
 
-The following tests still need to be completed:
+All planned software input-validation tests have passed.
 
-- Invalid temperature input
-- Invalid number of readings
-- Minimum temperature greater than maximum
-- Invalid menu choice
-- Physical LED ON/OFF operation
+The following hardware tests still need to be completed:
+
+- Connect the red LED to the Raspberry Pi.
+- Verify the LED turns ON during WARNING conditions.
+- Verify the LED turns OFF during NORMAL conditions.
+- Confirm GPIO control works with the C program.
 
 ### 6. Hardware Testing
 
@@ -80,9 +90,17 @@ The current software displays simulated LED states. Physical GPIO functionality 
 
 ### 7. Test Results
 
-All 14 documented software test cases passed.
+All 21 documented software test cases passed.
 
-The program correctly handles temperature readings, configurable limits, averages, CSV logging, and status updates.
+The program correctly handles:
+
+- Normal and warning temperatures
+- Custom temperature ranges
+- Multiple readings and averages
+- CSV logging and status updates
+- Invalid inputs and error handling
+
+Physical LED testing is still pending.
 
 ### 8. Conclusion
 
